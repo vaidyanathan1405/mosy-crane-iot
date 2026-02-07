@@ -15,9 +15,9 @@ param tags object
 @description('Storage account name for Functions runtime')
 param storageAccountName string
 
-var functionAppName = 'mosy-functions-${environment}'
-var hostingPlanName = 'mosy-asp-functions-${environment}'
-var appInsightsName = 'mosy-ai-${environment}'
+var functionAppName = 'mosy-functions-lm-${environment}'
+var hostingPlanName = 'mosy-asp-functions-lm-${environment}'
+var appInsightsName = 'mosy-ai-lm-${environment}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
   name: storageAccountName

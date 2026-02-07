@@ -33,7 +33,7 @@ jobs:
       - name: Get ACR credentials
         id: acr
         run: |
-          ACR_PASSWORD=$(az acr credential show -n mosycr --query "passwords[0].value" -o tsv)
+          ACR_PASSWORD=$(az acr credential show -n mosycrlmdev --query "passwords[0].value" -o tsv)
           echo "::add-mask::${ACR_PASSWORD}"
           echo "password=${ACR_PASSWORD}" >> $GITHUB_OUTPUT
 
@@ -45,12 +45,12 @@ jobs:
           key: ${{ secrets.JETSON_SSH_KEY }}
           script: |
             # Login to ACR
-            docker login mosycr.azurecr.io -u ${{ secrets.ACR_USERNAME }} -p ${{ steps.acr.outputs.password }}
+            docker login mosycrlmdev.azurecr.io -u ${{ secrets.ACR_USERNAME }} -p ${{ steps.acr.outputs.password }}
 
             # Pull latest images
             TAG=${{ inputs.image_tag }}
             for SERVICE in fusion-service state-engine mqtt-bridge iot-agent ocr-service vision-service safety-service; do
-              docker pull mosycr.azurecr.io/mosy-${SERVICE}:${TAG}
+              docker pull mosycrlmdev.azurecr.io/mosy-${SERVICE}:${TAG}
             done
 
             # Update docker compose

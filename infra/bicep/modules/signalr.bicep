@@ -15,7 +15,7 @@ param tags object
 @description('SignalR SKU — Free_F1 for dev, Standard_S1 for prod')
 param skuName string = environment == 'prod' ? 'Standard_S1' : 'Free_F1'
 
-var signalRName = 'mosy-signalr-${environment}'
+var signalRName = 'mosy-signalr-lm-${environment}'
 
 resource signalR 'Microsoft.SignalRService/signalR@2024-03-01' = {
   name: signalRName

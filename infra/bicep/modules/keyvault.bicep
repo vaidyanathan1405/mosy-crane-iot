@@ -18,7 +18,7 @@ param tenantId string
 @description('Object ID of the deploying user/service principal')
 param deployerObjectId string
 
-var keyVaultName = 'mosy-kv-${environment}'
+var keyVaultName = 'mosy-kv-lm-${environment}'
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: keyVaultName

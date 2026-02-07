@@ -12,7 +12,7 @@ param location string
 @description('Tags for all resources')
 param tags object
 
-var storageAccountName = 'mosystorage${environment}'
+var storageAccountName = 'mosystoragelm${environment}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageAccountName

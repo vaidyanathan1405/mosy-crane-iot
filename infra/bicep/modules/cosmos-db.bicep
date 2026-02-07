@@ -14,7 +14,7 @@ param location string
 @description('Tags for all resources')
 param tags object
 
-var cosmosAccountName = 'mosy-cosmos-${environment}'
+var cosmosAccountName = 'mosy-cosmos-lm-${environment}'
 var databaseName = 'mosydb'
 
 resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {

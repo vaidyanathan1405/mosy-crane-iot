@@ -5,7 +5,7 @@
 # mqtt-bridge and iot-agent containers.
 #
 # Usage:
-#   export IOT_HUB_NAME=mosy-iothub-dev
+#   export IOT_HUB_NAME=mosy-iothub-lm-dev
 #   export DEVICE_ID=POC-001
 #   bash apps/edge/scripts/rotate-sas-token.sh
 #
@@ -16,7 +16,7 @@
 
 set -euo pipefail
 
-IOT_HUB="${IOT_HUB_NAME:-mosy-iothub-dev}"
+IOT_HUB="${IOT_HUB_NAME:-mosy-iothub-lm-dev}"
 DEVICE="${DEVICE_ID:-POC-001}"
 DURATION="${SAS_TOKEN_DURATION:-86400}"  # 24 hours default
 COMPOSE_DIR="${COMPOSE_DIR:-/opt/mosy/edge}"

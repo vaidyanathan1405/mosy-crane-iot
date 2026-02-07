@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  REGISTRY: mosycr.azurecr.io
+  REGISTRY: mosycrlmdev.azurecr.io
 
 jobs:
   test:

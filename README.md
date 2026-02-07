@@ -59,7 +59,7 @@ graph LR
 
 ```bash
 # Clone
-git clone https://github.com/Marliontechxr/mosy-crane-iot.git
+git clone https://github.com/vaidyanathan1405/mosy-crane-iot.git
 cd mosy-crane-iot
 
 # Install dependencies

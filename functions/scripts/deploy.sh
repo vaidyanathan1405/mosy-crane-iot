@@ -57,7 +57,7 @@ echo "==> Installing runtime dependencies via npm..."
 npm install --omit=dev --no-package-lock 2>&1
 
 echo "==> Deploying to Azure..."
-func azure functionapp publish mosy-functions-dev
+func azure functionapp publish mosy-functions-lm-dev
 
 echo "==> Cleaning up..."
 rm -rf "$DEPLOY_DIR"

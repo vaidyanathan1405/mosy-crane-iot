@@ -15,8 +15,8 @@ param tags object
 @description('App Service Plan SKU — B1 for dev, B2 for prod')
 param skuName string = environment == 'prod' ? 'B2' : 'B1'
 
-var appServiceName = 'mosy-admin-${environment}'
-var appServicePlanName = 'mosy-asp-admin-${environment}'
+var appServiceName = 'mosy-admin-lm-${environment}'
+var appServicePlanName = 'mosy-asp-admin-lm-${environment}'
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName

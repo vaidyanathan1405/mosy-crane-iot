@@ -12,7 +12,7 @@ param location string
 @description('Tags for all resources')
 param tags object
 
-var iotHubName = 'mosy-iothub-${environment}'
+var iotHubName = 'mosy-iothub-lm-${environment}'
 
 resource iotHub 'Microsoft.Devices/IotHubs@2023-06-30' = {
   name: iotHubName

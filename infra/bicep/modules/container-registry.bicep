@@ -12,7 +12,7 @@ param location string
 @description('Tags for all resources')
 param tags object
 
-var acrName = 'mosycr${environment}'
+var acrName = 'mosycrlm${environment}'
 
 resource acr 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
   name: acrName
