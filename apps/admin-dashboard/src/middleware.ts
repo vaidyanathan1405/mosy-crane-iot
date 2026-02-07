@@ -47,18 +47,20 @@ function isRateLimited(ip: string): boolean {
 // ---------------------------------------------------------------------------
 // Security Headers
 // ---------------------------------------------------------------------------
+const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+
 const CSP_DIRECTIVES = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.azure.com https://*.azurewebsites.net wss://*.service.signalr.net https://login.microsoftonline.com",
+  "connect-src 'self' https://*.azure.com https://*.azurewebsites.net wss://*.service.signalr.net https://login.microsoftonline.com ws://40.80.91.207:9001",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
   "object-src 'none'",
-  "upgrade-insecure-requests",
+  ...(isDemoMode ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");
 
 // ---------------------------------------------------------------------------
@@ -90,7 +92,9 @@ export function middleware(request: NextRequest): NextResponse {
 
   // Security headers on all responses
   response.headers.set("Content-Security-Policy", CSP_DIRECTIVES);
-  response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  if (!isDemoMode) {
+    response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  }
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-XSS-Protection", "1; mode=block");
