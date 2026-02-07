@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth/use-auth';
 import { useAuthStore } from '@/stores/auth-store';
 import { useAlertStore } from '@/stores/alert-store';
 import { connectSignalR } from '@/lib/signalr';
+import { startDemoSignalR, isDemoModeClient } from '@/lib/demo-signalr';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -43,11 +44,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [isAuthenticated, router]);
 
-  // Sync auth user to store and connect SignalR
+  // Sync auth user to store and connect SignalR (or demo simulator)
   useEffect(() => {
     if (user) {
       setUser(user);
-      connectSignalR(getAccessToken).catch(console.error);
+      if (isDemoModeClient()) {
+        startDemoSignalR();
+      } else {
+        connectSignalR(getAccessToken).catch(console.error);
+      }
     }
   }, [user, setUser, getAccessToken]);
 

@@ -2,6 +2,7 @@
 
 /**
  * AuthProvider — wraps the app with MsalProvider and handles auth initialization.
+ * In demo mode, skips MSAL entirely to avoid hanging on missing client ID.
  */
 import React, { useEffect, useState } from 'react';
 import {
@@ -12,10 +13,13 @@ import {
 import { MsalProvider } from '@azure/msal-react';
 import { msalConfig } from './msal-config';
 
-const msalInstance = new PublicClientApplication(msalConfig);
+const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+
+const msalInstance = isDemoMode ? null : new PublicClientApplication(msalConfig);
 
 /** Initialize MSAL and set active account from cache. */
 async function initializeMsal(): Promise<void> {
+  if (!msalInstance) return;
   await msalInstance.initialize();
   const accounts = msalInstance.getAllAccounts();
   if (accounts.length > 0) {
@@ -31,10 +35,12 @@ async function initializeMsal(): Promise<void> {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(isDemoMode);
 
   useEffect(() => {
-    initializeMsal().then(() => setIsInitialized(true));
+    if (!isDemoMode) {
+      initializeMsal().then(() => setIsInitialized(true));
+    }
   }, []);
 
   if (!isInitialized) {
@@ -45,7 +51,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <MsalProvider instance={msalInstance}>{children}</MsalProvider>;
+  if (isDemoMode) {
+    return <>{children}</>;
+  }
+
+  return <MsalProvider instance={msalInstance!}>{children}</MsalProvider>;
 }
 
 export { msalInstance };

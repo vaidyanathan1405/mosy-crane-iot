@@ -2,12 +2,15 @@
 
 /**
  * useAuth hook — provides login, logout, token acquisition, and role checking.
+ * In demo mode, returns a fake SuperAdmin user without requiring MSAL.
  */
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { useCallback, useMemo } from 'react';
 import { loginRequest, apiTokenRequest } from './msal-config';
 import type { UserRole } from '@mosy/shared-types';
+
+const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
 /** Role hierarchy: SuperAdmin > SiteManager > Operator > Viewer. */
 const ROLE_HIERARCHY: Record<UserRole, number> = {
@@ -24,7 +27,30 @@ export interface AuthUser {
   role: UserRole;
 }
 
-export function useAuth() {
+const DEMO_USER: AuthUser = {
+  id: 'demo-admin-001',
+  name: 'Demo Admin',
+  email: 'admin@mosy-demo.com',
+  role: 'SuperAdmin',
+};
+
+function useDemoAuth() {
+  const login = useCallback(async () => {}, []);
+  const logout = useCallback(async () => {}, []);
+  const getAccessToken = useCallback(async () => 'demo-token', []);
+  const hasRole = useCallback((_requiredRole: UserRole) => true, []);
+
+  return {
+    user: DEMO_USER,
+    isAuthenticated: true,
+    login,
+    logout,
+    getAccessToken,
+    hasRole,
+  };
+}
+
+function useMsalAuth() {
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
@@ -99,4 +125,11 @@ export function useAuth() {
     getAccessToken,
     hasRole,
   };
+}
+
+export function useAuth() {
+  if (isDemoMode) {
+    return useDemoAuth();
+  }
+  return useMsalAuth();
 }
